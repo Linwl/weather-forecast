@@ -14,10 +14,11 @@ import lombok.ToString;
 public class RecipientEntity {
 
 
-    public RecipientEntity(String name,String email)
+    public RecipientEntity(String name,String email,WeatherEntity weather)
     {
         this.name =name;
         this.email =email;
+        this.weather = weather;
     }
 
     /**
@@ -29,4 +30,9 @@ public class RecipientEntity {
      * 邮箱
      */
     private String email;
+
+    /**
+     * 通知的天气内容
+     */
+    private WeatherEntity weather;
 }

@@ -1,6 +1,7 @@
 package com.linwl.weatherforecast.builder;
 
 import com.linwl.weatherforecast.entity.RecipientEntity;
+import com.linwl.weatherforecast.entity.WeatherEntity;
 import lombok.Data;
 
 /**
@@ -21,6 +22,8 @@ public class RecipientBuilder {
      */
     private String email;
 
+    private WeatherEntity weather;
+
     public RecipientBuilder name(String name)
     {
         this.name =name;
@@ -33,9 +36,15 @@ public class RecipientBuilder {
         return this;
     }
 
+    public RecipientBuilder weatherinfo(WeatherEntity weather)
+    {
+        this.weather =weather;
+        return this;
+    }
+
 
     public RecipientEntity build()
     {
-        return new RecipientEntity(name,email);
+        return new RecipientEntity(name,email,weather);
     }
 }

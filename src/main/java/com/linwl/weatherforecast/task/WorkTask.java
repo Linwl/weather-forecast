@@ -1,6 +1,7 @@
 package com.linwl.weatherforecast.task;
 
 import com.linwl.weatherforecast.entity.RecipientEntity;
+import com.linwl.weatherforecast.entity.WeatherEntity;
 import com.linwl.weatherforecast.utils.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,7 +31,6 @@ public class WorkTask implements Runnable {
         {
             log.info(MessageFormat.format("{0}接收到用户<{1}>的发送任务!",worker,recipient.getName()));
 
-            HttpUtil.syncGet(HttpUtil.getWeatherUrl());
         }
         catch (Exception e)
         {

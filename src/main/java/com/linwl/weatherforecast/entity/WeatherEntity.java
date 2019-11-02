@@ -4,6 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -24,7 +25,7 @@ public class WeatherEntity {
     /**
      * 日期
      */
-    private Date date;
+    private LocalDate date;
 
     /**
      * 城市名称
@@ -79,10 +80,16 @@ public class WeatherEntity {
     private String airLevel;
 
     /**
+     * 空气质量描述
+     */
+    @JSONField(defaultValue = "air_tips")
+    private String airTips;
+
+    /**
      * 更新时间
      */
     @JSONField(defaultValue = "update_time")
-    private Date updateTime;
+    private String updateTime;
 
 
 

@@ -1,0 +1,13 @@
+server:
+  email:
+    from: wan06051180@163.com
+    passwd: linwl199104
+  send:
+    hour: 11
+    interval: 1
+    foramt: second
+receivers:
+  - name: linwl
+    email: 304115325@qq.com
+  - name: yangxz
+    email: 742438711@qq.com

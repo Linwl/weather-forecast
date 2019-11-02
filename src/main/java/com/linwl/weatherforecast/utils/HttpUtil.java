@@ -1,9 +1,11 @@
 package com.linwl.weatherforecast.utils;
 
+import com.alibaba.fastjson.JSONObject;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import java.lang.reflect.Type;
 import java.util.Objects;
 
 /**
@@ -16,16 +18,17 @@ public class HttpUtil {
 
     private HttpUtil(){}
 
-    public static void syncGet(String url) throws Exception
+    public static <T> T syncGet(String url,Class<?> clazz) throws Exception
     {
+        T result =null;
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         Response response = okHttpClient.newCall(request).execute();
         if (response.isSuccessful()) {
-            System.out.println(Objects.requireNonNull(response.body()).string());
-        }else {
-            System.out.println("失败");
+            String body = Objects.requireNonNull(response.body()).string();
+            result = JSONObject.parseObject(body, (Type) clazz);
         }
+        return result;
     }
 
     /**

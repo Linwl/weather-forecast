@@ -2,8 +2,12 @@ package com.linwl.weatherforecast;
 
 import com.linwl.weatherforecast.builder.RecipientBuilder;
 import com.linwl.weatherforecast.entity.RecipientEntity;
+import com.linwl.weatherforecast.entity.WeatherEntity;
 import com.linwl.weatherforecast.task.WorkTask;
+import com.linwl.weatherforecast.utils.HttpUtil;
 import com.linwl.weatherforecast.utils.TaskThreadFactory;
+import com.linwl.weatherforecast.utils.YamlReader;
+import com.linwl.weatherforecast.utils.common;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.MessageFormat;
@@ -25,18 +29,19 @@ public class WeartherApplication {
 
     private static List<RecipientEntity> recipientEntities = new ArrayList<>();
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws Exception {
         log.info("天气预报服务启动中...");
         boolean exited =false;
-        recipientEntities.add(new RecipientBuilder().name("linwl").email("304115325@qq.com").build());
         ExecutorService taskPool =new ThreadPoolExecutor(4,8,5, TimeUnit.SECONDS,taskQueue,new TaskThreadFactory(),new ThreadPoolExecutor.AbortPolicy());
         log.info("天气预报服务启动完毕！");
         while (!exited)
         {
             try {
-                int exhour = LocalDateTime.now().getHour();
-                if(exhour == 11)
+                int exhour =Integer.parseInt(YamlReader.getInstance().getValueByPath("server.send.hour").toString());
+                if(LocalDateTime.now().getHour() == exhour)
                 {
+                    WeatherEntity weather=  HttpUtil.syncGet(HttpUtil.getWeatherUrl(), WeatherEntity.class);
+                    recipientEntities.add(new RecipientBuilder().name("linwl").email("304115325@qq.com").weatherinfo(weather).build());
                     for (RecipientEntity recipientEntity : recipientEntities) {
                         taskPool.submit(new WorkTask(recipientEntity));
                     }
@@ -50,7 +55,9 @@ public class WeartherApplication {
             }
             finally {
                 log.info("主线程发布任务完毕,开始进行睡眠！");
-                Thread.sleep(5000);
+                int interval =Integer.parseInt(YamlReader.getInstance().getValueByPath("server.send.interval").toString());
+                String format =YamlReader.getInstance().getValueByPath("server.send.foramt").toString();
+                Thread.sleep(common.getTime(interval,format));
             }
         }
     }
