@@ -35,7 +35,7 @@ public class WeartherApplication {
         {
             try {
                 int exhour = LocalDateTime.now().getHour();
-                if(exhour == 10)
+                if(exhour == 11)
                 {
                     for (RecipientEntity recipientEntity : recipientEntities) {
                         taskPool.submit(new WorkTask(recipientEntity));

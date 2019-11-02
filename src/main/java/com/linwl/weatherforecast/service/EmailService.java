@@ -7,4 +7,5 @@ package com.linwl.weatherforecast.service;
  * @modified By：
  */
 public class EmailService {
+
 }
