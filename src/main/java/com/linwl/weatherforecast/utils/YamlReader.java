@@ -78,7 +78,7 @@ public class YamlReader {
                 return result;
             }
             else {
-                throw new Exception("属性配置路径规则不正确！");
+                return getValue(properties, path);
             }
         }
         else {

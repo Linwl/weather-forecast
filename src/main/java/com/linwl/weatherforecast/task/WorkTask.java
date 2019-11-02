@@ -1,11 +1,12 @@
 package com.linwl.weatherforecast.task;
 
 import com.linwl.weatherforecast.entity.RecipientEntity;
-import com.linwl.weatherforecast.entity.WeatherEntity;
-import com.linwl.weatherforecast.utils.HttpUtil;
+import com.linwl.weatherforecast.service.EmailService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author ：linwl
@@ -30,7 +31,9 @@ public class WorkTask implements Runnable {
         try
         {
             log.info(MessageFormat.format("{0}接收到用户<{1}>的发送任务!",worker,recipient.getName()));
-
+            EmailService emailService =EmailService.getInstance();
+            emailService.setAddress(recipient.getEmail(),MessageFormat.format("{0}的天气预报信息", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))),recipient.getWeather());
+            emailService.send();
         }
         catch (Exception e)
         {

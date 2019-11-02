@@ -14,7 +14,7 @@ import lombok.ToString;
 public class RecipientEntity {
 
 
-    public RecipientEntity(String name,String email,WeatherEntity weather)
+    public RecipientEntity(String name,String email,String weather)
     {
         this.name =name;
         this.email =email;
@@ -34,5 +34,5 @@ public class RecipientEntity {
     /**
      * 通知的天气内容
      */
-    private WeatherEntity weather;
+    private String weather;
 }

@@ -14,6 +14,7 @@ import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.*;
 
 /**
@@ -27,12 +28,14 @@ public class WeartherApplication {
 
     private static BlockingQueue<Runnable> taskQueue =new ArrayBlockingQueue<>(1000);
 
-    private static List<RecipientEntity> recipientEntities = new ArrayList<>();
 
     public static void main(String[] args) throws Exception {
         log.info("天气预报服务启动中...");
         boolean exited =false;
-        ExecutorService taskPool =new ThreadPoolExecutor(4,8,5, TimeUnit.SECONDS,taskQueue,new TaskThreadFactory(),new ThreadPoolExecutor.AbortPolicy());
+        int poolSize =Integer.parseInt(YamlReader.getInstance().getValueByPath("server.pool.pool-size").toString());
+        int maxPoolSize =Integer.parseInt(YamlReader.getInstance().getValueByPath("server.pool.max-pool-size").toString());
+        int keepAliveTime =Integer.parseInt(YamlReader.getInstance().getValueByPath("server.pool.keep-alive-time").toString());
+        ExecutorService taskPool =new ThreadPoolExecutor(poolSize,maxPoolSize,keepAliveTime,TimeUnit.MILLISECONDS,taskQueue,new TaskThreadFactory(),new ThreadPoolExecutor.AbortPolicy());
         log.info("天气预报服务启动完毕！");
         while (!exited)
         {
@@ -40,9 +43,11 @@ public class WeartherApplication {
                 int exhour =Integer.parseInt(YamlReader.getInstance().getValueByPath("server.send.hour").toString());
                 if(LocalDateTime.now().getHour() == exhour)
                 {
+                    //TODO:获取天气信息
                     WeatherEntity weather=  HttpUtil.syncGet(HttpUtil.getWeatherUrl(), WeatherEntity.class);
-                    recipientEntities.add(new RecipientBuilder().name("linwl").email("304115325@qq.com").weatherinfo(weather).build());
-                    for (RecipientEntity recipientEntity : recipientEntities) {
+                    List<Map<String,Object>> receiverList =(List<Map<String,Object>>)YamlReader.getInstance().getValueByPath("receivers");
+                    for (Map<String,Object> receiver: receiverList) {
+                        RecipientEntity recipientEntity  = new RecipientBuilder().name(receiver.getOrDefault("name",null).toString()).email(receiver.getOrDefault("email",null).toString()).weatherinfo(common.getContent(weather)).build();
                         taskPool.submit(new WorkTask(recipientEntity));
                     }
                 }

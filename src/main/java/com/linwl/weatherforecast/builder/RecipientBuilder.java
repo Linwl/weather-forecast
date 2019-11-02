@@ -22,7 +22,7 @@ public class RecipientBuilder {
      */
     private String email;
 
-    private WeatherEntity weather;
+    private String weather;
 
     public RecipientBuilder name(String name)
     {
@@ -36,7 +36,7 @@ public class RecipientBuilder {
         return this;
     }
 
-    public RecipientBuilder weatherinfo(WeatherEntity weather)
+    public RecipientBuilder weatherinfo(String weather)
     {
         this.weather =weather;
         return this;
