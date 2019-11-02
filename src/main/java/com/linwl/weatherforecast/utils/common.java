@@ -59,7 +59,7 @@ public class common {
         content.append("的").append(weather.getCity());
         content.append("天气信息");
         content.append("</title>").append("<body leftmargin=\"8\" marginwidth=\"0\" topmargin=\"8\" marginheight=\"4\" offset=\"0\">");
-        content.append("<table>");
+        content.append("<table border=\"1\">");
         content.append("<thead>");
         content.append("<tr>");
         content.append("<th>天气情况</th>");
@@ -71,7 +71,6 @@ public class common {
         content.append("</thead>");
         content.append("<tbody>");
         content.append("<tr>");
-//        content.append("<td style=\"text-align:center\">"++"</td>");
         content.append("<td>"+weather.getWea()+"</td>");
         content.append("<td>"+weather.getHumidity()+"</td>");
         content.append("<td>"+weather.getTem()+"</td>");
@@ -81,7 +80,8 @@ public class common {
         content.append("</tbody>");
         content.append("</table>");
         content.append("<hr>");
-        content.append("<span style=\"font-size:17px\">Thank you! </span></body>");
+        content.append("<span style=\"font-size:17px\">").append(weather.getAirTips());
+        content.append("</span></body>");
         content.append("</html>");
         return content.toString();
     }

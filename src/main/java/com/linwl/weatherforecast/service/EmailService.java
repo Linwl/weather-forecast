@@ -127,7 +127,7 @@ public class EmailService {
 
     // 设置邮件的文本内容
     BodyPart contentPart = new MimeBodyPart();
-    contentPart.setText(text);
+    contentPart.setContent(text, "text/html; charset=utf-8");
     multipart.addBodyPart(contentPart);
     // 添加附件
     if (annexed) {
