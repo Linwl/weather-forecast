@@ -6,11 +6,14 @@ server:
   email:
     host: smtp.163.com
     user: wan06051180@163.com
-    passwd: lin199104
+    passwd: lin199105
+    debug: true
   send:
-    hour: 17
-    interval: 5
-    foramt: minute
+    hour: 7
+    interval: 1
+    foramt: hour
+  request:
+    city-id: 101280800
 receivers:
   - name: linwl
     email: 2489720745@qq.com

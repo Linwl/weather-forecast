@@ -44,7 +44,8 @@ public class WeartherApplication {
                 if(LocalDateTime.now().getHour() == exhour)
                 {
                     //TODO:获取天气信息
-                    WeatherEntity weather=  HttpUtil.syncGet(HttpUtil.getWeatherUrl(), WeatherEntity.class);
+                    String  cityid= YamlReader.getInstance().getValueByPath("server.request.city-id").toString();
+                    WeatherEntity weather=  HttpUtil.syncGet(HttpUtil.getWeatherUrl(cityid), WeatherEntity.class);
                     List<Map<String,Object>> receiverList =(List<Map<String,Object>>)YamlReader.getInstance().getValueByPath("receivers");
                     for (Map<String,Object> receiver: receiverList) {
                         RecipientEntity recipientEntity  = new RecipientBuilder().name(receiver.getOrDefault("name",null).toString()).email(receiver.getOrDefault("email",null).toString()).weatherinfo(common.getContent(weather)).build();

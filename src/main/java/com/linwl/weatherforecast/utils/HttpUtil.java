@@ -35,7 +35,7 @@ public class HttpUtil {
      * 获取请求天气url
      * @return
      */
-    public static String getWeatherUrl()
+    public static String getWeatherUrl(String cityid)
     {
         StringBuilder sb =new StringBuilder();
         sb.append("https://www.tianqiapi.com/api?");
@@ -46,7 +46,7 @@ public class HttpUtil {
         sb.append("&version=");
         sb.append("v6");
         sb.append("&cityid=");
-        sb.append("101280800");
+        sb.append(cityid);
         return sb.toString();
     }
 }

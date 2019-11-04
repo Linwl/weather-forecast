@@ -63,10 +63,37 @@ public class WeatherEntity {
     private String win;
 
     /**
-     * 风速
+     * 风速等级
      */
     @JSONField(defaultValue = "win_speed")
     private String winSpeed;
+
+    /**
+     * 风速
+     */
+    @JSONField(defaultValue = "win_meter")
+    private String winMeter;
+
+    /**
+     * 气压
+     */
+    private String pressure;
+
+    /**
+     * 能见度
+     */
+    private String visibility;
+
+    /**
+     * PM
+     */
+    @JSONField(defaultValue = "air_pm25")
+    private String airPm25;
+
+    /**
+     * 星期
+     */
+    private String week;
 
     /**
      * 空气质量
@@ -90,7 +117,5 @@ public class WeatherEntity {
      */
     @JSONField(defaultValue = "update_time")
     private String updateTime;
-
-
 
 }

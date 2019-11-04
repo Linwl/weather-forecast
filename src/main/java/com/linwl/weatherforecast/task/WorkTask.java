@@ -30,10 +30,10 @@ public class WorkTask implements Runnable {
         String worker = Thread.currentThread().getName();
         try
         {
-            log.info(MessageFormat.format("{0}接收到用户<{1}>的发送任务!",worker,recipient.getName()));
+            log.info(MessageFormat.format("{0}接收到用户<{1}>的邮件<{2}>发送任务!",worker,recipient.getName(),recipient.getEmail()));
             EmailService emailService =EmailService.getInstance();
-            emailService.setAddress(recipient.getEmail(),MessageFormat.format("{0}的天气预报信息", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))),recipient.getWeather());
-            emailService.send();
+            emailService.send(recipient.getEmail(),MessageFormat.format("{0}的天气预报信息", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))),recipient.getWeather());
+            log.info(MessageFormat.format("{0}执行完用户<{1}>的邮件<{2}>发送任务!",worker,recipient.getName(),recipient.getEmail()));
         }
         catch (Exception e)
         {

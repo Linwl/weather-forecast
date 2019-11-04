@@ -46,6 +46,10 @@ public class EmailService {
   /** 是否发送附近 */
   private boolean annexed;
 
+  private Session session;
+
+  private Transport transport;
+
   private EmailService() {
     if (EmailService.SingletonHolder.instance != null) {
       throw new IllegalStateException();
@@ -62,6 +66,26 @@ public class EmailService {
           YamlReader.getInstance().getValueByPath("server.email.passwd").toString();
       SingletonHolder.instance.from = SingletonHolder.instance.user;
       SingletonHolder.instance.annexed = false;
+      Properties props = new Properties();
+      // 设置发送邮件的邮件服务器的属性（这里使用网易的smtp服务器）
+      props.put("mail.smtp.host", SingletonHolder.instance.host);
+      // 需要经过授权，也就是有户名和密码的校验，这样才能通过验证（一定要有这一条）
+      props.put("mail.smtp.auth", "true");
+      props.put("mail.smtp.socketFactory.port", "465");
+      props.put("mail.smtp.port", "465");
+      props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+
+      // 用刚刚设置好的props对象构建一个session
+      SingletonHolder.instance.session = Session.getDefaultInstance(props);
+      // 有了这句便可以在发送邮件的过程中在console处显示过程信息，供调试使
+      // 用（你可以在控制台（console)上看到发送邮件的过程）
+      boolean debuged = Boolean.parseBoolean(YamlReader.getInstance().getValueByPath("server.email.debug").toString());
+      SingletonHolder.instance.session.setDebug(debuged);
+      SingletonHolder.instance.transport = SingletonHolder.instance.session.getTransport(new URLName("smtp", SingletonHolder.instance.host, 465, null, SingletonHolder.instance.user, SingletonHolder.instance.pwd));
+      // 连接服务器的邮箱
+      SingletonHolder.instance.transport.connect();
+      log.info("连接163邮箱服务器成功!");
+
     } catch (Exception e) {
       log.error(MessageFormat.format("初始化邮件配置异常:{0}!", e.getMessage()));
     }
@@ -75,47 +99,33 @@ public class EmailService {
     private static EmailService instance = new EmailService();
   }
 
-  public void setAddress(String to, String subject, String text) {
+  public synchronized void send(String to, String subject, String text) throws Exception {
     this.text = text;
     this.to = to;
     this.subject = subject;
+    sendEmail();
   }
 
-  public void setAddress(String to, String subject, String text, String from) {
+  public synchronized void send(String to, String subject, String text, String from)
+      throws Exception {
     this.text = text;
     this.to = to;
     this.subject = subject;
     this.from = from;
+    log.info(MessageFormat.format("准备发送邮件给用户<{0}>!", to));
+    sendEmail();
   }
 
-  public void setAffix(String affix, String affixName, boolean annexed) {
-    this.affix = affix;
-    this.affixName = affixName;
-    this.annexed = annexed;
-  }
-
-  public void send() throws Exception {
-    Properties props = new Properties();
-    // 设置发送邮件的邮件服务器的属性（这里使用网易的smtp服务器）
-    props.put("mail.smtp.host", host);
-    // 需要经过授权，也就是有户名和密码的校验，这样才能通过验证（一定要有这一条）
-    props.put("mail.smtp.auth", "true");
-
-    // 用刚刚设置好的props对象构建一个session
-    Session session = Session.getDefaultInstance(props);
-
-    // 有了这句便可以在发送邮件的过程中在console处显示过程信息，供调试使
-    // 用（你可以在控制台（console)上看到发送邮件的过程）
-    session.setDebug(true);
+  private void sendEmail() throws MessagingException {
 
     // 用session为参数定义消息对象
     MimeMessage message = new MimeMessage(session);
     // 加载发件人地址
     message.setFrom(new InternetAddress(from));
     // 加载收件人地址
-    InternetAddress [] toAddr = new InternetAddress[2];
-    toAddr[0] = new InternetAddress(user);//自己的邮箱
-    toAddr[1] = new InternetAddress(to);//对方的邮箱
+    InternetAddress[] toAddr = new InternetAddress[2];
+    toAddr[0] = new InternetAddress(user); // 自己的邮箱
+    toAddr[1] = new InternetAddress(to); // 对方的邮箱
 
     // 3. To: 收件人（可以增加多个收件人、抄送、密送）
     message.setRecipients(MimeMessage.RecipientType.TO, toAddr);
@@ -147,11 +157,7 @@ public class EmailService {
     // 保存邮件
     message.saveChanges();
     // 发送邮件
-    Transport transport = session.getTransport("smtp");
-    // 连接服务器的邮箱
-    transport.connect(host, user, pwd);
-    // 把邮件发送出去
     transport.sendMessage(message, message.getAllRecipients());
-    transport.close();
+    log.info(MessageFormat.format("发送邮件<{0}>成功!", to));
   }
 }
