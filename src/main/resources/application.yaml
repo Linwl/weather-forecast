@@ -1,0 +1,21 @@
+server:
+  pool:
+    pool-size: 2
+    max-pool-size: 8
+    keep-alive-time: 5000
+  email:
+    host: smtp.163.com
+    user: wan06051180@163.com
+    passwd: lin199105
+    debug: true
+  send:
+    hour: 7
+    interval: 1
+    foramt: hour
+  request:
+    city-id: 101280800
+receivers:
+  - name: linwl
+    email: 2489720745@qq.com
+  - name: yangxz
+    email: 742438711@qq.com
