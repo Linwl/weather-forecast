@@ -1,8 +1,6 @@
 package com.linwl.weatherforecast.builder;
 
 import com.linwl.weatherforecast.entity.RecipientEntity;
-import com.linwl.weatherforecast.entity.WeatherEntity;
-import lombok.Data;
 
 /**
  * @author ：linwl
