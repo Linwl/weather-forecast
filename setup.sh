@@ -13,6 +13,6 @@ docker rmi -f $(docker images | grep none | awk '{print $3}')
 
 docker images
 
-docker run  -d --name weather_forecast linwl/weather_forecast:$image_version
+docker run  -d --name weather_forecast --restart=always linwl/weather_forecast:$image_version
 
 docker logs weather_forecast
