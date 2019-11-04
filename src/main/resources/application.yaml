@@ -1,7 +1,7 @@
 server:
   pool:
-    pool-size: 2
-    max-pool-size: 8
+    pool-size: 3
+    max-pool-size: 6
     keep-alive-time: 5000
   email:
     host: smtp.163.com
@@ -9,7 +9,7 @@ server:
     passwd: lin199105
     debug: false
   send:
-    hour: 7
+    hour: 15
     interval: 1
     foramt: hour
   request:
@@ -19,3 +19,5 @@ receivers:
     email: 2489720745@qq.com
   - name: yangxz
     email: 742438711@qq.com
+  - name: linjk
+    email: 312507683@qq.com
