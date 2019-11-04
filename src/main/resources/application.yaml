@@ -7,7 +7,7 @@ server:
     host: smtp.163.com
     user: wan06051180@163.com
     passwd: lin199105
-    debug: true
+    debug: false
   send:
     hour: 7
     interval: 1
