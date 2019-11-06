@@ -157,7 +157,13 @@ public class EmailService {
     // 保存邮件
     message.saveChanges();
     // 发送邮件
-    transport.sendMessage(message, message.getAllRecipients());
+    if(transport.isConnected()){
+      transport.sendMessage(message, message.getAllRecipients());
+    }
+    else {
+      transport.connect();
+      transport.sendMessage(message, message.getAllRecipients());
+    }
     log.info(MessageFormat.format("发送邮件<{0}>成功!", to));
   }
 }
