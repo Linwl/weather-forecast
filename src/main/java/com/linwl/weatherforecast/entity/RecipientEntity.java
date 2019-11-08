@@ -14,11 +14,11 @@ import lombok.ToString;
 public class RecipientEntity {
 
 
-    public RecipientEntity(String name,String email,String weather)
+    public RecipientEntity(String name,String email,String cityId)
     {
         this.name =name;
         this.email =email;
-        this.weather = weather;
+        this.cityId = cityId;
     }
 
     /**
@@ -35,4 +35,9 @@ public class RecipientEntity {
      * 通知的天气内容
      */
     private String weather;
+
+    /**
+     * 所在城市编码
+     */
+    private String cityId;
 }

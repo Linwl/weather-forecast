@@ -2,17 +2,14 @@ package com.linwl.weatherforecast;
 
 import com.linwl.weatherforecast.builder.RecipientBuilder;
 import com.linwl.weatherforecast.entity.RecipientEntity;
-import com.linwl.weatherforecast.entity.WeatherEntity;
 import com.linwl.weatherforecast.task.WorkTask;
-import com.linwl.weatherforecast.utils.HttpUtil;
 import com.linwl.weatherforecast.utils.TaskThreadFactory;
 import com.linwl.weatherforecast.utils.YamlReader;
-import com.linwl.weatherforecast.utils.common;
+import com.linwl.weatherforecast.utils.Common;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -43,12 +40,9 @@ public class WeartherApplication {
                 int exhour =Integer.parseInt(YamlReader.getInstance().getValueByPath("server.send.hour").toString());
                 if(LocalDateTime.now().getHour() == exhour)
                 {
-                    //TODO:获取天气信息
-                    String  cityid= YamlReader.getInstance().getValueByPath("server.request.city-id").toString();
-                    WeatherEntity weather=  HttpUtil.syncGet(HttpUtil.getWeatherUrl(cityid), WeatherEntity.class);
                     List<Map<String,Object>> receiverList =(List<Map<String,Object>>)YamlReader.getInstance().getValueByPath("receivers");
                     for (Map<String,Object> receiver: receiverList) {
-                        RecipientEntity recipientEntity  = new RecipientBuilder().name(receiver.getOrDefault("name",null).toString()).email(receiver.getOrDefault("email",null).toString()).weatherinfo(common.getContent(weather)).build();
+                        RecipientEntity recipientEntity  = new RecipientBuilder().name(receiver.getOrDefault("name","").toString()).email(receiver.getOrDefault("email","").toString()).cityId(receiver.getOrDefault("city-id","").toString()).build();
                         taskPool.submit(new WorkTask(recipientEntity));
                     }
                 }
@@ -63,7 +57,7 @@ public class WeartherApplication {
                 log.info("主线程发布任务完毕,开始进行睡眠！");
                 int interval =Integer.parseInt(YamlReader.getInstance().getValueByPath("server.send.interval").toString());
                 String format =YamlReader.getInstance().getValueByPath("server.send.foramt").toString();
-                Thread.sleep(common.getTime(interval,format));
+                Thread.sleep(Common.getTime(interval,format));
             }
         }
     }

@@ -20,7 +20,10 @@ public class RecipientBuilder {
      */
     private String email;
 
-    private String weather;
+    /**
+     * 城市编码
+     */
+    private String cityId;
 
     public RecipientBuilder name(String name)
     {
@@ -34,15 +37,15 @@ public class RecipientBuilder {
         return this;
     }
 
-    public RecipientBuilder weatherinfo(String weather)
+    public RecipientBuilder cityId(String cityId)
     {
-        this.weather =weather;
+        this.cityId =cityId;
         return this;
     }
 
 
     public RecipientEntity build()
     {
-        return new RecipientEntity(name,email,weather);
+        return new RecipientEntity(name,email,cityId);
     }
 }
