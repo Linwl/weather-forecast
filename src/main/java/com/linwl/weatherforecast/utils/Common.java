@@ -11,9 +11,9 @@ import java.util.concurrent.TimeUnit;
  * @description ：
  * @modified By：
  */
-public class common {
+public class Common {
 
-    private common(){}
+    private Common(){}
 
     /**
      * 获取时间

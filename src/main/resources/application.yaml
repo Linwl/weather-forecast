@@ -1,7 +1,7 @@
 server:
   pool:
-    pool-size: 3
-    max-pool-size: 6
+    pool-size: 2
+    max-pool-size: 4
     keep-alive-time: 5000
   email:
     host: smtp.163.com
@@ -12,12 +12,16 @@ server:
     hour: 7
     interval: 1
     foramt: hour
-  request:
-    city-id: 101280800
 receivers:
   - name: linwl
     email: 2489720745@qq.com
+    city-id: 101280800
   - name: yangxz
     email: 742438711@qq.com
+    city-id: 101280800
   - name: linjk
     email: 312507683@qq.com
+    city-id: 101280800
+  - name: linr
+    email: lionry0909@163.com
+    city-id: 101280101
