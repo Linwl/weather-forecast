@@ -71,6 +71,7 @@ public class WeartherApplication {
                     .build();
             taskPool.submit(new WorkTask(recipientEntity));
           }
+          log.info("主线程完成任务发布！");
           enableSend = false;
         }
       } catch (Exception e) {
