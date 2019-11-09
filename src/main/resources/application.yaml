@@ -9,9 +9,12 @@ server:
     passwd: lin199105
     debug: false
   send:
-    hour: 7
-    interval: 1
-    foramt: hour
+    time: 07:00
+weather:
+  url: https://www.tianqiapi.com/api
+  appid: 83423352
+  appsecret: 6m1wkvcp
+  version: v6
 receivers:
   - name: linwl
     email: 2489720745@qq.com
