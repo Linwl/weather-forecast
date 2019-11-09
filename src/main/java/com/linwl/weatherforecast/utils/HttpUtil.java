@@ -16,37 +16,36 @@ import java.util.Objects;
  */
 public class HttpUtil {
 
-    private HttpUtil(){}
+  private HttpUtil() {}
 
-    public static <T> T syncGet(String url,Class<?> clazz) throws Exception
-    {
-        T result =null;
-        OkHttpClient okHttpClient = new OkHttpClient();
-        Request request = new Request.Builder().url(url).build();
-        Response response = okHttpClient.newCall(request).execute();
-        if (response.isSuccessful()) {
-            String body = Objects.requireNonNull(response.body()).string();
-            result = JSONObject.parseObject(body, (Type) clazz);
-        }
-        return result;
+  public static <T> T syncGet(String url, Class<?> clazz) throws Exception {
+    T result = null;
+    OkHttpClient okHttpClient = new OkHttpClient();
+    Request request = new Request.Builder().url(url).build();
+    Response response = okHttpClient.newCall(request).execute();
+    if (response.isSuccessful()) {
+      String body = Objects.requireNonNull(response.body()).string();
+      result = JSONObject.parseObject(body, (Type) clazz);
     }
+    return result;
+  }
 
-    /**
-     * 获取请求天气url
-     * @return
-     */
-    public static String getWeatherUrl(String cityid)
-    {
-        StringBuilder sb =new StringBuilder();
-        sb.append("https://www.tianqiapi.com/api?");
-        sb.append("appid=");
-        sb.append("83423352");
-        sb.append("&appsecret=");
-        sb.append("6m1wkvcp");
-        sb.append("&version=");
-        sb.append("v6");
-        sb.append("&cityid=");
-        sb.append(cityid);
-        return sb.toString();
-    }
+  /**
+   * 获取请求天气url
+   *
+   * @return
+   */
+  public static String getWeatherUrl(String cityid) throws Exception {
+    StringBuilder sb = new StringBuilder();
+    sb.append(YamlReader.getInstance().getValueByPath("weather.url").toString());
+    sb.append("?appid=");
+    sb.append(YamlReader.getInstance().getValueByPath("weather.appid").toString());
+    sb.append("&appsecret=");
+    sb.append(YamlReader.getInstance().getValueByPath("weather.appsecret").toString());
+    sb.append("&version=");
+    sb.append(YamlReader.getInstance().getValueByPath("weather.version").toString());
+    sb.append("&cityid=");
+    sb.append(cityid);
+    return sb.toString();
+  }
 }
