@@ -55,7 +55,7 @@ public class WeartherApplication {
         String exTime = YamlReader.getInstance().getValueByPath("server.send.time").toString();
         String nowTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
         // 0点重置发送标志
-        if (nowTime.equals(ZERO_TIME)) {
+        if (ZERO_TIME.equals(nowTime)) {
           enableSend = true;
         }
         if (nowTime.equals(exTime) && enableSend) {
